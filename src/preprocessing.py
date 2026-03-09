@@ -25,33 +25,33 @@ def shuffle_data(X,y , seed = None ):
     return X_shuffled , y_shuffled
 
 def binary_encode_target(y):
+
     if y is None:
         raise ValueError("y is None")
-        
-    if isinstance(y , (list , np.ndarray)):
+
+    if isinstance(y, (list, np.ndarray)):
         y = pd.Series(y)
 
     if y.dtype == object:
-        y = y.astype(str).str.strip()  # edge case stripes teh whtespace
+        y = y.astype(str).str.strip()
 
     if y.isnull().any():
-        raise ValueError("Target contains missing values")
+        raise ValueError("target contains missing values")
 
     unq_labels = y.unique()
-    list_of_unqs = unq_labels.tolist()
 
-    if len(list_of_unqs) != 2 :
+    if len(unq_labels) != 2:
         raise ValueError("number of classes must be equal to 2")
 
-    unq_labels = sorted(unique_labels)
+    unq_labels = sorted(unq_labels)
 
-    first_label = list_of_unqs[0]
-    second_label = list_of_unqs[1]
+    first_label = unq_labels[0]
+    second_label = unq_labels[1]
 
-    mapping = {first_label : 1 , second_label : 0}
+    mapping = {first_label: 1, second_label: 0}
 
-    y_encoded = y.map(mapping)
-    y_encoded = y_encoded.to_numpy()
+    y_encoded = y.map(mapping).to_numpy()
+
     return y_encoded
 
 def one_hot_encode(X , categorical_indices , feature_names):
@@ -61,7 +61,7 @@ def one_hot_encode(X , categorical_indices , feature_names):
     if isinstance(X , np.ndarray):
         X = pd.DataFrame(X , columns = feature_names)
         
-    if len(feature_names) != len(X.shape[1]):
+    if len(feature_names) != X.shape[1]:
         raise ValueError("columns mismatch")
         
     if len(categorical_indices) == 0:
@@ -215,7 +215,7 @@ def fit_scaler(X_train):
 
     if X_train.ndim != 2:
         raise ValueError("X_train must be a 2D array")
-    if X_array.shape[0] == 0:
+    if X_train.shape[0] == 0:
         raise ValueError("no samples")
 
     mean = np.mean(X_train , axis = 0)
