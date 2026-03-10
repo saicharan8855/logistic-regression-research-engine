@@ -1,0 +1,203 @@
+import numpy as np
+import pandas as pd
+
+class LogisticRegression():
+    
+    def __init__(self):
+        self.theta = None
+        self.loss_history = []
+        
+    def sigmoid(self,z):
+        z = np.asarray(z)
+        z = np.clip(z, -500, 500)
+
+        sigmoid_value = 1 / (1 + np.exp(-z))
+
+        return sigmoid_value
+
+    def compute_cost(self,X,y,theta):
+        X = np.asarray(X)
+        y = np.asarray(y)
+        theta = np.asarray(theta)
+        
+        m = y.shape[0]
+        z = X@theta
+
+        p = self.sigmoid(z)
+        epsilon = 1e-15
+        p = np.clip(p , epsilon , 1-epsilon)
+
+        cost = -1/m * np.sum(y * np.log(p) + (1 - y) * np.log(1 - p))
+
+        return cost
+
+    def compute_gradient(self,X,y , theta):
+        X = np.asarray(X)
+        y = np.asarray(y)
+        theta = np.asarray(theta)
+
+        m = y.shape[0]
+        z = X@theta
+
+        p = self.sigmoid(z)
+        gradient = (1/m)*(X.T @ (p-y))
+
+        return gradient
+
+    def compute_hessian(self,X,theta):
+
+        X = np.asarray(X)
+        theta = np.asarray(theta)
+
+        m = X.shape[0]
+
+        z = X @ theta
+
+        p = self.sigmoid(z)
+
+        r = p*(1 - p)
+
+        R  = np.diag(r)
+
+        H = (1/m) * (X.T @ R @ X)
+
+        return H
+
+    def fit_gd(self , X , y , alpha = 0.01 , epochs = 1000):
+        X = np.asarray(X)
+        y = np.asarray(y)
+
+        m , n = X.shape
+
+        self.theta = np.zeros((n , 1))
+        self.loss_history = []
+
+        for _ in range(epochs):
+            cost = self.compute_cost(X , y , self.theta)
+            self.loss_history.append(cost)
+
+            gradient = self.compute_gradient(X , y , self.theta)
+
+            self.theta = self.theta - alpha * gradient
+        return self
+
+    def fit_newton(self, X, y, max_iter=100, tol=1e-6):
+
+        X = np.asarray(X)
+        y = np.asarray(y).reshape(-1, 1)
+
+        m, n = X.shape
+
+        self.theta = np.zeros((n, 1))
+        self.loss_history = []
+
+        for _ in range(max_iter):
+
+            cost = self.compute_cost(X, y, self.theta)
+            self.loss_history.append(cost)
+
+            gradient = self.compute_gradient(X, y, self.theta)
+
+            H = self.compute_hessian(X, self.theta)
+
+        
+            H_inv = np.linalg.inv(H)
+
+            self.theta = self.theta - H_inv @ gradient
+
+            if np.linalg.norm(gradient) < tol:
+                break
+
+        return self
+
+    def fit_sgd(self, X, y, alpha=0.01, epochs=100):
+
+        X = np.asarray(X)
+        y = np.asarray(y).reshape(-1, 1)
+
+        m, n = X.shape
+
+        self.theta = np.zeros((n, 1))
+        self.loss_history = []
+
+        for _ in range(epochs):
+
+            cost = self.compute_cost(X, y, self.theta)
+            self.loss_history.append(cost)
+
+            for i in range(m):
+
+                X_i = X[i:i+1]      
+                y_i = y[i:i+1]
+
+                gradient = self.compute_gradient(X_i, y_i, self.theta)
+
+                self.theta -= alpha * gradient
+
+        return self
+
+    def fit_mini_batch(self, X, y, alpha=0.01, epochs=100, batch_size=32):
+
+        X = np.asarray(X)
+        y = np.asarray(y).reshape(-1, 1)
+
+        m, n = X.shape
+
+        self.theta = np.zeros((n, 1))
+        self.loss_history = []
+
+        for _ in range(epochs):
+
+            cost = self.compute_cost(X, y, self.theta)
+            self.loss_history.append(cost)
+
+            start = 0
+
+            while start < m:
+
+                end = min(start + batch_size, m)
+
+                X_batch = X[start:end]
+                y_batch = y[start:end]
+
+                gradient = self.compute_gradient(X_batch, y_batch, self.theta)
+
+                self.theta -= alpha * gradient
+
+                start = end
+
+        return self
+
+
+    def predict_proba(self, X):
+
+        if self.theta is None:
+            raise ValueError("Model not trained yet")
+
+        X = np.asarray(X)
+
+        z = X @ self.theta
+
+        probabilities = self.sigmoid(z)
+
+        return probabilities.flatten()
+
+    def predict(self, X, threshold=0.5):
+
+        probabilities = self.predict_proba(X)
+
+        predictions = (probabilities >= threshold).astype(int)
+
+        return predictions
+        
+
+
+
+
+
+
+
+            
+
+
+        
