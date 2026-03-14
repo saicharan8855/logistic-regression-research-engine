@@ -55,9 +55,8 @@ class LogisticRegression():
 
         p = self.sigmoid(z)
 
-        r = p*(1 - p)
-
-        R  = np.diag(r)
+        r = (p * (1 - p)).flatten()
+        R = np.diag(r)
 
         H = (1/m) * (X.T @ R @ X)
 
@@ -65,7 +64,7 @@ class LogisticRegression():
 
     def fit_gd(self , X , y , alpha = 0.01 , epochs = 1000):
         X = np.asarray(X)
-        y = np.asarray(y)
+        y = np.asarray(y).reshape(-1, 1)
 
         m , n = X.shape
 
@@ -101,7 +100,7 @@ class LogisticRegression():
             H = self.compute_hessian(X, self.theta)
 
         
-            H_inv = np.linalg.inv(H)
+            np.linalg.solve(H, gradient)
 
             self.theta = self.theta - H_inv @ gradient
 
