@@ -121,6 +121,7 @@ def handle_nulls(X , strategy = "median"):
     if X is None:
         raise ValueError("X is None")
     X = np.asarray(X).copy()
+    X = X.astype(float)
 
     if strategy not in ["median","mean"]:
         raise ValueError("strategy must be median or mean")
@@ -207,7 +208,7 @@ def remove_multicollinear_features(X,feature_names , threshold = 0.9):
 
     remaining_feature_names = [feature_names[i] for i in keep_indices]
 
-    return X_filtered, remaining_feature_names
+    return X_filtered, remaining_feature_names, keep_indices
 
 def fit_scaler(X_train):
     
