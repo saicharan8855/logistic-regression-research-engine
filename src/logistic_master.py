@@ -230,7 +230,59 @@ class LogisticRegression():
         predictions = (probabilities >= threshold).astype(int)
 
         return predictions
+
+class SoftmaxRegression:
+    
+    def __init__(self):
+        self.theta = None
+        self.loss_history = []
+    
+    def softmax(self, z):
+        # Numerically stable softmax
+        z = z - np.max(z, axis=1, keepdims=True)
+        exp_z = np.exp(z)
+        return exp_z / np.sum(exp_z, axis=1, keepdims=True)
+    
+    def one_hot(self, y, n_classes):
+        m = len(y)
+        Y = np.zeros((m, n_classes))
+        Y[np.arange(m), y.astype(int)] = 1
+        return Y
+    
+    def compute_cost(self, X, Y):
+        m = X.shape[0]
+        probs = self.softmax(X @ self.theta)
+        probs = np.clip(probs, 1e-15, 1 - 1e-15)
+        cost = -1/m * np.sum(Y * np.log(probs))
+        return cost
+    
+    def compute_gradient(self, X, Y):
+        m = X.shape[0]
+        probs = self.softmax(X @ self.theta)
+        gradient = (1/m) * X.T @ (probs - Y)
+        return gradient
+    
+    def fit(self, X, y, alpha=0.01, epochs=1000):
+        m, n = X.shape
+        n_classes = len(np.unique(y))
+        Y = self.one_hot(y, n_classes)
         
+        self.theta = np.zeros((n, n_classes))
+        self.loss_history = []
+        
+        for _ in range(epochs):
+            cost = self.compute_cost(X, Y)
+            self.loss_history.append(cost)
+            gradient = self.compute_gradient(X, Y)
+            self.theta -= alpha * gradient
+        
+        return self
+    
+    def predict_proba(self, X):
+        return self.softmax(X @ self.theta)
+    
+    def predict(self, X):
+        return np.argmax(self.predict_proba(X), axis=1)
 
 
 
