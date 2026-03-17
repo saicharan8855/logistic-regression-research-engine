@@ -7,14 +7,11 @@
 [![Python](https://img.shields.io/badge/Python-3.10+-3776AB?style=for-the-badge&logo=python&logoColor=white)](https://python.org)
 [![NumPy](https://img.shields.io/badge/NumPy-Only-013243?style=for-the-badge&logo=numpy&logoColor=white)](https://numpy.org)
 [![Jupyter](https://img.shields.io/badge/Notebooks-10-F37626?style=for-the-badge&logo=jupyter&logoColor=white)](https://jupyter.org)
-[![Theory](https://img.shields.io/badge/Theory_Derivations-6-8b5cf6?style=for-the-badge)](Theory/)
-[![Datasets](https://img.shields.io/badge/Datasets-6_Real--World-22c55e?style=for-the-badge)](Data/)
-[![Phases](https://img.shields.io/badge/Phases-10%2F10_Complete-f59e0b?style=for-the-badge)](.)
 [![License](https://img.shields.io/badge/License-MIT-e5e7eb?style=for-the-badge)](LICENSE)
 
 <br/>
 
-### *`sklearn.fit()` is one line. This is 400 lines of knowing exactly why it works.*
+## *Build it from scratch. Break it on purpose. Understand it completely.*
 
 <br/>
 
@@ -22,7 +19,7 @@
 
 ---
 
-## Why This Project Exists
+## What This Actually Is
 
 Most ML courses teach you to call `sklearn.linear_model.LogisticRegression()` and move on. No derivation. No diagnostics. No honesty about failure.
 
@@ -53,11 +50,11 @@ Every line of math — from the Bernoulli likelihood derivation to Wald z-tests 
 logistic-regression-research-engine/
 │
 ├── src/
-│   ├── logistic_master.py        ← LogisticRegression + SoftmaxRegression classes
-│   ├── preprocessing.py          ← 12 functions: scaling, VIF, one-hot, nulls
-│   └── utils.py                  ← MCC, F1, confusion matrix, ROC, PR
+│   ├── logistic_master.py
+│   ├── preprocessing.py
+│   └── utils.py
 │
-├── Theory/                       ← 6 LaTeX derivation notebooks
+├── Theory/
 │   ├── 01_Bernoulli_MLE.ipynb
 │   ├── 02_Logit_Link.ipynb
 │   ├── 03_GLM_Proof.ipynb
@@ -65,12 +62,12 @@ logistic-regression-research-engine/
 │   ├── 05_Fisher_Information.ipynb
 │   └── 06_Inference_Theory.ipynb
 │
-├── Notebooks/                    ← 10 experiment phases (00 → 10)
-├── Data/raw/                     ← 5 of 6 CSVs
-├── Data/processed/               ← 24 .npy arrays, ready to run
-├── Results/figures/              ← 11 publication-quality plots
-├── Results/models/               ← 6 trained theta .npy files
-└── docs/                         ← 11 visual explainers
+├── Notebooks/
+├── Data/raw/
+├── Data/processed/
+├── Results/figures/
+├── Results/models/
+└── docs/
 ```
 
 ---
@@ -83,7 +80,7 @@ logistic-regression-research-engine/
 
 <p align="center"><i>Why linear regression fails at classification — and why the sigmoid is the correct solution.</i></p>
 
-### The Sigmoid — Why This Shape, Not Another
+## The Sigmoid — Why This Shape, Not Another
 
 <p align="center">
   <img src="docs/sigmoid_function.png" width="860" alt="Sigmoid Function"/>
@@ -93,23 +90,23 @@ $$\sigma(z) = \frac{1}{1 + e^{-z}}$$
 
 The sigmoid isn't chosen arbitrarily. It's the unique function that emerges from the Bernoulli log-likelihood when you solve for the probability that makes your data most likely. `02_Logit_Link.ipynb` proves this.
 
-### Log-Loss — Derived, Not Assumed
+## Log-Loss — Derived, Not Assumed
 
 $$J(\theta) = -\frac{1}{m} \sum_{i=1}^{m} \left[ y_i \log \hat{p}_i + (1 - y_i) \log(1 - \hat{p}_i) \right]$$
 
 This is maximum likelihood estimation on Bernoulli random variables — not an arbitrary loss function. `01_Bernoulli_MLE.ipynb` derives every step.
 
-### Gradient — Vectorized and Exact
+## Gradient — Vectorized and Exact
 
 $$\nabla J(\theta) = \frac{1}{m} X^T (\sigma(X\theta) - y)$$
 
-### Hessian — Convexity Guaranteed
+## Hessian — Convexity Guaranteed
 
 $$H = \frac{1}{m} X^T R X, \quad R = \text{diag}(p_i(1-p_i))$$
 
 Because $R$ is diagonal with strictly positive values, $H$ is positive semi-definite — log-loss is **convex** and gradient descent will always find the global minimum. `04_Hessian_PSD.ipynb` proves this rigorously.
 
-### Newton-Raphson — Second-Order Optimization
+## Newton-Raphson — Second-Order Optimization
 
 $$\theta := \theta - H^{-1} \nabla J(\theta)$$
 
@@ -181,7 +178,7 @@ model.fit_mini_batch(X_train, y_train, alpha=0.1, epochs=100, batch_size=32)
 model.fit_newton(X_train, y_train, max_iter=100, tol=1e-6)
 ```
 
-### Loss Curves — All 4 Optimizers Head-to-Head
+## Loss Curves — All 4 Optimizers Head-to-Head
 
 <p align="center">
   <img src="docs/loss_curve_comparison.png" width="860" alt="Loss Curve Comparison"/>
@@ -189,19 +186,19 @@ model.fit_newton(X_train, y_train, max_iter=100, tol=1e-6)
 
 <p align="center"><i>GD, SGD, Mini-Batch, and Newton loss curves. The convergence gap is real and measurable.</i></p>
 
-### 3D Cost Surface — What Gradient Descent Actually Navigates
+## 3D Cost Surface — What Gradient Descent Actually Navigates
 
 <p align="center">
   <img src="docs/gradient_descent_3d.png" width="860" alt="Gradient Descent 3D Cost Surface"/>
 </p>
 
-### Optimizer Benchmark — Across All 6 Datasets
+## Optimizer Benchmark — Across All 6 Datasets
 
 <p align="center">
   <img src="Results/figures/optimizer_comparison.png" width="860" alt="Optimizer Comparison"/>
 </p>
 
-### Newton vs GD — The Convergence Numbers
+## Newton vs GD — The Convergence Numbers
 
 | Dataset | GD Iterations | Newton Iterations | Speedup |
 |:---|---:|---:|---:|
@@ -233,7 +230,7 @@ Newton doesn't just converge faster — it takes geometrically optimal steps usi
 
 ## Regularization — L1, L2, Elastic Net
 
-### L1 Coefficient Path — Sparsity In Action
+## L1 Coefficient Path — Sparsity In Action
 
 <p align="center">
   <img src="Results/figures/coefficient_path_l1.png" width="860" alt="L1 Coefficient Path"/>
@@ -241,7 +238,7 @@ Newton doesn't just converge faster — it takes geometrically optimal steps usi
 
 <p align="center"><i>Features dying to exactly zero as λ increases. This is L1 sparsity, live. Each line is a feature — the ones that flatline are eliminated.</i></p>
 
-### L2 Coefficient Path — Smooth Shrinkage
+## L2 Coefficient Path — Smooth Shrinkage
 
 <p align="center">
   <img src="Results/figures/coefficient_path_l2.png" width="860" alt="L2 Coefficient Path"/>
@@ -276,13 +273,13 @@ CI_upper = model.theta.flatten() + 1.96 * SE
 OR       = np.exp(model.theta.flatten())
 ```
 
-### Confidence Intervals — Per Feature, Per Dataset
+## Confidence Intervals — Per Feature, Per Dataset
 
 <p align="center">
   <img src="Results/figures/confidence_intervals.png" width="860" alt="Confidence Intervals"/>
 </p>
 
-### Odds Ratios — Clinical Interpretability
+## Odds Ratios — Clinical Interpretability
 
 <p align="center">
   <img src="Results/figures/odds_ratios.png" width="860" alt="Odds Ratios"/>
@@ -290,7 +287,7 @@ OR       = np.exp(model.theta.flatten())
 
 <p align="center"><i>Odds ratios with 95% CIs for Heart Disease. Features whose CI crosses 1.0 are not significant. Features far from 1.0 are the story.</i></p>
 
-### Heart Disease — What The Numbers Actually Say
+## Heart Disease — What The Numbers Actually Say
 
 | Feature | Odds Ratio | Clinical Interpretation |
 |:---|:---:|:---|
@@ -306,13 +303,13 @@ OR       = np.exp(model.theta.flatten())
 
 ## Failure Mode Analysis — The Part Most Projects Hide
 
-### ROC Curves — Across All 6 Datasets
+## ROC Curves — Across All 6 Datasets
 
 <p align="center">
   <img src="Results/figures/roc_curves.png" width="860" alt="ROC Curves"/>
 </p>
 
-### Precision-Recall Curves — Where Imbalance Is Exposed
+## Precision-Recall Curves — Where Imbalance Is Exposed
 
 <p align="center">
   <img src="Results/figures/pr_curves.png" width="860" alt="PR Curves"/>
@@ -320,13 +317,13 @@ OR       = np.exp(model.theta.flatten())
 
 <p align="center"><i>PR curves expose what ROC hides on imbalanced data. Credit Fraud and Stroke collapse is visible here — invisible on accuracy alone.</i></p>
 
-### Confusion Matrices — All 6 Datasets
+## Confusion Matrices — All 6 Datasets
 
 <p align="center">
   <img src="Results/figures/confusion_matrices.png" width="860" alt="Confusion Matrices"/>
 </p>
 
-### The Honest Numbers
+## The Honest Numbers
 
 **Credit Fraud (0.17% minority class)**
 ```
@@ -504,7 +501,7 @@ from utils import *
 
 ---
 
-## What's Next
+## Roadmap
 
 - [ ] SMOTE / class weighting for Credit Fraud and Stroke
 - [ ] Multinomial logistic regression beyond 3 classes
