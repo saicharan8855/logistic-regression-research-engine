@@ -26,3 +26,4 @@ Results/metrics/
 # Temporary files
 *.log
 *.tmp
+"Data/raw/credit_fraud.csv" 
