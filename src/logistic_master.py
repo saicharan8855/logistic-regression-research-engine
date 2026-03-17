@@ -15,7 +15,7 @@ class LogisticRegression():
 
         return sigmoid_value
 
-    def compute_cost(self,X,y,theta):
+    def compute_cost(self,X,y,theta , lambda_reg =  0.0 , penalty = None , l1_ratio = 0.5):
         X = np.asarray(X)
         y = np.asarray(y)
         theta = np.asarray(theta)
@@ -28,6 +28,16 @@ class LogisticRegression():
         p = np.clip(p , epsilon , 1-epsilon)
 
         cost = -1/m * np.sum(y * np.log(p) + (1 - y) * np.log(1 - p))
+
+        if penalty == 'l2':
+            cost += (lambda_reg / (2*m) * np.sum[1:]**2)
+        elif penalty == 'l1':
+            cost += (lambda_reg / m)* np.sum(np.abs(theta[1:]))
+        elif penalty == 'elasticnet' :
+            l2_term = (lambda_reg / (2 * m)) * np.sum(theta[1:] ** 2)
+            l1_term = (lambda_reg / m) * np.sum(np.abs(theta[1:]))
+            cost += l1_ratio * l1_term + (1 - l1_ratio) * l2_term
+            
 
         return cost
 
@@ -62,7 +72,7 @@ class LogisticRegression():
 
         return H
 
-    def fit_gd(self , X , y , alpha = 0.01 , epochs = 1000):
+    def fit_gd(self , X , y , alpha = 0.01 , epochs = 1000 , lambda_reg = 0.0, penalty = None, l1_ratio = 0.5):
         X = np.asarray(X)
         y = np.asarray(y).reshape(-1, 1)
 
@@ -77,10 +87,27 @@ class LogisticRegression():
 
             gradient = self.compute_gradient(X , y , self.theta)
 
+            if penalty == 'l2':
+                reg_term = (lambda_reg / m) * self.theta
+                reg_term[0] = 0
+                gradient += reg_term
+
+            elif penalty == 'l1':
+                reg_term = (lambda_reg / m) * np.sign(self.theta)
+                reg_term[0] = 0
+                gradient += reg_term
+
+            elif penalty == 'elasticnet':
+                l2_term = (lambda_reg / m) * self.theta
+                l1_term = (lambda_reg / m) * np.sign(self.theta)
+                reg_term = l1_ratio * l1_term + (1 - l1_ratio) * l2_term
+                reg_term[0] = 0
+                gradient += reg_term
+
             self.theta = self.theta - alpha * gradient
         return self
 
-    def fit_newton(self, X, y, max_iter=100, tol=1e-6):
+    def fit_newton(self, X, y, max_iter=100, tol=1e-6 , lambda_reg = 0.0, penalty = None, l1_ratio = 0.5):
 
         X = np.asarray(X)
         y = np.asarray(y).reshape(-1, 1)
@@ -96,6 +123,23 @@ class LogisticRegression():
             self.loss_history.append(cost)
 
             gradient = self.compute_gradient(X, y, self.theta)
+            if penalty == 'l2':
+                reg_term = (lambda_reg / m) * self.theta
+                reg_term[0] = 0
+                gradient += reg_term
+                
+            elif penalty == 'l1':
+                reg_term = (lambda_reg / m) * np.sign(self.theta)
+                reg_term[0] = 0
+                gradient += reg_term
+                
+            elif penalty == 'elasticnet':
+                l2_term = (lambda_reg / m) * self.theta
+                l1_term = (lambda_reg / m) * np.sign(self.theta)
+                reg_term = l1_ratio * l1_term + (1 - l1_ratio) * l2_term
+                reg_term[0] = 0
+                gradient += reg_term
+
 
             H = self.compute_hessian(X, self.theta)
 
