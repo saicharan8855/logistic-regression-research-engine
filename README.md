@@ -1,18 +1,6 @@
 <div align="center">
 
-```
-██╗      ██████╗  ██████╗ ██╗███████╗████████╗██╗ ██████╗
-██║     ██╔═══██╗██╔════╝ ██║██╔════╝╚══██╔══╝██║██╔════╝
-██║     ██║   ██║██║  ███╗██║███████╗   ██║   ██║██║
-██║     ██║   ██║██║   ██║██║╚════██║   ██║   ██║██║
-███████╗╚██████╔╝╚██████╔╝██║███████║   ██║   ██║╚██████╗
-╚══════╝ ╚═════╝  ╚═════╝ ╚═╝╚══════╝   ╚═╝   ╚═╝ ╚═════╝
-         R E S E A R C H   E N G I N E
-```
-
-# Logistic Regression — From First Principles
-
-### *Every gradient. Every Hessian. Every p-value. Written by hand.*
+<img src="https://capsule-render.vercel.app/api?type=waving&color=0:6366f1,50:8b5cf6,100:ec4899&height=220&section=header&text=Logistic%20Regression&fontSize=52&fontColor=ffffff&fontAlignY=38&desc=Research%20Engine%20%E2%80%94%20Built%20From%20First%20Principles&descAlignY=58&descSize=18&animation=fadeIn" width="100%"/>
 
 <br/>
 
@@ -26,7 +14,9 @@
 
 <br/>
 
-*`sklearn.fit()` is one line. This is 400 lines of knowing exactly why it works.*
+### *`sklearn.fit()` is one line. This is 400 lines of knowing exactly why it works.*
+
+<br/>
 
 </div>
 
@@ -56,7 +46,7 @@ Every line of math — from the Bernoulli likelihood derivation to Wald z-tests 
 ## Project Architecture
 
 <p align="center">
-  <img src="docs/11_project_architecture.png" width="860" alt="Project Architecture"/>
+  <img src="docs/project_architecture.png" width="860" alt="Project Architecture"/>
 </p>
 
 ```
@@ -88,17 +78,15 @@ logistic-regression-research-engine/
 ## The Mathematical Engine
 
 <p align="center">
-  <img src="docs/05_logistic_vs_linear.png" width="860" alt="Logistic vs Linear Regression"/>
+  <img src="docs/logistic_vs_linear.png" width="860" alt="Logistic vs Linear Regression"/>
 </p>
 
 <p align="center"><i>Why linear regression fails at classification — and why the sigmoid is the correct solution.</i></p>
 
-Six theory notebooks with complete LaTeX derivations. Every implementation decision traces back to one of these.
-
 ### The Sigmoid — Why This Shape, Not Another
 
 <p align="center">
-  <img src="docs/01_sigmoid_function.png" width="860" alt="Sigmoid Function"/>
+  <img src="docs/sigmoid_function.png" width="860" alt="Sigmoid Function"/>
 </p>
 
 $$\sigma(z) = \frac{1}{1 + e^{-z}}$$
@@ -119,7 +107,7 @@ $$\nabla J(\theta) = \frac{1}{m} X^T (\sigma(X\theta) - y)$$
 
 $$H = \frac{1}{m} X^T R X, \quad R = \text{diag}(p_i(1-p_i))$$
 
-Because $R$ is a diagonal matrix of strictly positive values, $H$ is positive semi-definite — log-loss is **convex** and gradient descent will always find the global minimum. `04_Hessian_PSD.ipynb` proves this rigorously.
+Because $R$ is diagonal with strictly positive values, $H$ is positive semi-definite — log-loss is **convex** and gradient descent will always find the global minimum. `04_Hessian_PSD.ipynb` proves this rigorously.
 
 ### Newton-Raphson — Second-Order Optimization
 
@@ -139,7 +127,7 @@ $$\theta := \theta - H^{-1} \nabla J(\theta)$$
 ## The 6 Datasets — Each One A Different Stress Test
 
 <p align="center">
-  <img src="docs/07_dataset_overview.png" width="860" alt="Dataset Overview"/>
+  <img src="docs/dataset_overview.png" width="860" alt="Dataset Overview"/>
 </p>
 
 <p align="center"><i>Sample sizes span 3 orders of magnitude. Class imbalance spans balanced → 0.17% minority. Features span 9 → 109.</i></p>
@@ -160,7 +148,7 @@ $$\theta := \theta - H^{-1} \nabla J(\theta)$$
 ## The Full Training Pipeline
 
 <p align="center">
-  <img src="docs/10_training_pipeline.png" width="860" alt="Training Pipeline"/>
+  <img src="docs/training_pipeline.png" width="860" alt="Training Pipeline"/>
 </p>
 
 ---
@@ -168,7 +156,7 @@ $$\theta := \theta - H^{-1} \nabla J(\theta)$$
 ## Preprocessing Pipeline
 
 <p align="center">
-  <img src="docs/06_preprocessing_pipeline.png" width="860" alt="Preprocessing Pipeline"/>
+  <img src="docs/preprocessing_pipeline.png" width="860" alt="Preprocessing Pipeline"/>
 </p>
 
 <p align="center"><i>12 preprocessing functions. Multicollinearity removal on Breast Cancer dropped condition number from ~10³ to 23.7.</i></p>
@@ -196,7 +184,7 @@ model.fit_newton(X_train, y_train, max_iter=100, tol=1e-6)
 ### Loss Curves — All 4 Optimizers Head-to-Head
 
 <p align="center">
-  <img src="docs/04_loss_curve_comparison.png" width="860" alt="Loss Curve Comparison"/>
+  <img src="docs/loss_curve_comparison.png" width="860" alt="Loss Curve Comparison"/>
 </p>
 
 <p align="center"><i>GD, SGD, Mini-Batch, and Newton loss curves. The convergence gap is real and measurable.</i></p>
@@ -204,7 +192,7 @@ model.fit_newton(X_train, y_train, max_iter=100, tol=1e-6)
 ### 3D Cost Surface — What Gradient Descent Actually Navigates
 
 <p align="center">
-  <img src="docs/03_gradient_descent_3d.png" width="860" alt="Gradient Descent 3D Cost Surface"/>
+  <img src="docs/gradient_descent_3d.png" width="860" alt="Gradient Descent 3D Cost Surface"/>
 </p>
 
 ### Optimizer Benchmark — Across All 6 Datasets
@@ -221,7 +209,7 @@ model.fit_newton(X_train, y_train, max_iter=100, tol=1e-6)
 | Diabetes | 1,000 | **~12** | **~83×** |
 | Heart Disease | 1,000 | **~12** | **~83×** |
 
-Newton doesn't just converge faster — it takes geometrically optimal steps using curvature. When you derive the Hessian yourself, you understand exactly why this happens.
+Newton doesn't just converge faster — it takes geometrically optimal steps using curvature. When you derive the Hessian yourself, you understand exactly why.
 
 ---
 
@@ -231,14 +219,14 @@ Newton doesn't just converge faster — it takes geometrically optimal steps usi
   <img src="Results/figures/learning_rate_study.png" width="860" alt="Learning Rate Study"/>
 </p>
 
-<p align="center"><i>Too small → glacial convergence. Too large → divergence. The condition number of each dataset predicts exactly which regime you'll land in.</i></p>
+<p align="center"><i>Too small → glacial convergence. Too large → divergence. The condition number of each dataset predicts exactly which regime you land in.</i></p>
 
 ---
 
 ## Decision Boundary — What The Model Actually Learns
 
 <p align="center">
-  <img src="docs/02_decision_boundary.png" width="860" alt="Decision Boundary"/>
+  <img src="docs/decision_boundary.png" width="860" alt="Decision Boundary"/>
 </p>
 
 ---
@@ -251,7 +239,7 @@ Newton doesn't just converge faster — it takes geometrically optimal steps usi
   <img src="Results/figures/coefficient_path_l1.png" width="860" alt="L1 Coefficient Path"/>
 </p>
 
-<p align="center"><i>Features dying to exactly zero as λ increases. This is L1 sparsity, live. Each line is a feature. The ones that hit zero are eliminated.</i></p>
+<p align="center"><i>Features dying to exactly zero as λ increases. This is L1 sparsity, live. Each line is a feature — the ones that flatline are eliminated.</i></p>
 
 ### L2 Coefficient Path — Smooth Shrinkage
 
@@ -259,7 +247,7 @@ Newton doesn't just converge faster — it takes geometrically optimal steps usi
   <img src="Results/figures/coefficient_path_l2.png" width="860" alt="L2 Coefficient Path"/>
 </p>
 
-<p align="center"><i>L2 shrinks everything smoothly toward zero but never eliminates a feature entirely. Compare to L1 above — the difference is stark.</i></p>
+<p align="center"><i>L2 shrinks everything toward zero but never eliminates a feature entirely. Compare to L1 above — the difference is stark.</i></p>
 
 ```python
 # L2 — smooth shrinkage, handles multicollinearity
@@ -330,7 +318,7 @@ OR       = np.exp(model.theta.flatten())
   <img src="Results/figures/pr_curves.png" width="860" alt="PR Curves"/>
 </p>
 
-<p align="center"><i>PR curves expose what ROC hides on imbalanced data. Credit Fraud's collapse is visible here — invisible on accuracy alone.</i></p>
+<p align="center"><i>PR curves expose what ROC hides on imbalanced data. Credit Fraud and Stroke collapse is visible here — invisible on accuracy alone.</i></p>
 
 ### Confusion Matrices — All 6 Datasets
 
@@ -390,17 +378,17 @@ High-leverage analysis is not academic — it is practically important.
 ## MCC vs Accuracy — Why The Metric Choice Matters
 
 <p align="center">
-  <img src="docs/09_mcc_vs_accuracy.png" width="860" alt="MCC vs Accuracy"/>
+  <img src="docs/mcc_vs_accuracy.png" width="860" alt="MCC vs Accuracy"/>
 </p>
 
-<p align="center"><i>Every dataset plotted. High accuracy with near-zero MCC = your model learned nothing. Stroke and Credit Fraud live in that corner.</i></p>
+<p align="center"><i>High accuracy with near-zero MCC = your model learned nothing. Stroke and Credit Fraud live in that corner.</i></p>
 
 ---
 
-## GD Training Results — All 6 Datasets
+## Final Results — All 6 Datasets
 
 <p align="center">
-  <img src="docs/08_final_results_heatmap.png" width="860" alt="Final Results Heatmap"/>
+  <img src="docs/final_results_heatmap.png" width="860" alt="Final Results Heatmap"/>
 </p>
 
 | Dataset | Accuracy | F1 | MCC | Honest Verdict |
@@ -414,7 +402,7 @@ High-leverage analysis is not academic — it is practically important.
 
 ---
 
-## Softmax Multiclass — Iris Dataset
+## Softmax — Multiclass Extension
 
 <p align="center">
   <img src="Results/figures/softmax_iris.png" width="860" alt="Softmax on Iris"/>
@@ -435,7 +423,7 @@ y_pred = model.predict(X_test)   # argmax over K classes
 ## Benchmark — From Scratch vs Sklearn
 
 <p align="center">
-  <img src="Results/figures/scratch_vs_sklearn.png" width="860" alt="Scratch vs Sklearn Benchmark"/>
+  <img src="Results/figures/scratch_vs_sklearn.png" width="860" alt="Scratch vs Sklearn"/>
 </p>
 
 | Dataset | Scratch MCC | Sklearn MCC | Verdict |
@@ -456,7 +444,7 @@ y_pred = model.predict(X_test)   # argmax over K classes
 ## Five Things This Project Proves
 
 **1. Implementation forces understanding.**
-You cannot implement Newton's method without knowing why the Hessian must be positive semi-definite. You cannot implement L1 without understanding the proximal gradient step. `sklearn.fit()` hides all of this.
+You cannot implement Newton's method without knowing why the Hessian must be positive semi-definite. You cannot implement L1 without understanding the proximal gradient step. `sklearn.fit()` hides all of this behind one function call.
 
 **2. Preprocessing wins models.**
 Multicollinearity removal on Breast Cancer dropped condition number from ~10³ to 23.7. 80% of Phase VIII failure modes trace back to preprocessing decisions, not model architecture.
@@ -487,7 +475,7 @@ jupyter notebook
 EDA  Pre  GD  Newton Reg  Diag  Inf  Fail  Adv  Bench
 ```
 
-**Import pattern used in all notebooks:**
+**Import pattern:**
 ```python
 import sys, os
 sys.path.append(os.path.join(os.getcwd(), '..', 'src'))
@@ -511,12 +499,21 @@ from utils import *
 | Theory derivations | 6 |
 | Real-world datasets | 6 |
 | Total training samples | ~325,000 |
-| Publication-quality figures | 11 |
+| Figures generated | 22 |
 | Phases completed | **10 / 10** |
 
 ---
 
+## What's Next
 
+- [ ] SMOTE / class weighting for Credit Fraud and Stroke
+- [ ] Multinomial logistic regression beyond 3 classes
+- [ ] Stochastic Newton for large-scale datasets
+- [ ] Bayesian logistic regression with MCMC sampling
+- [ ] Interactive dashboard for live coefficient visualization
+- [ ] Ordinal logistic regression extension
+
+---
 
 ## License
 
@@ -526,16 +523,12 @@ MIT — see [LICENSE](LICENSE) for details.
 
 <div align="center">
 
-<br/>
-
-```
-Built with NumPy.
-Validated against sklearn.
-Honest about every failure.
-```
+<img src="https://capsule-render.vercel.app/api?type=waving&color=0:ec4899,50:8b5cf6,100:6366f1&height=120&section=footer&animation=fadeIn" width="100%"/>
 
 <br/>
 
-*If this helped you understand logistic regression at a deeper level — a ⭐ goes a long way.*
+*Built with NumPy. Validated against sklearn. Honest about every failure.*
+
+**If this helped you understand logistic regression at a deeper level — a ⭐ goes a long way.**
 
 </div>
