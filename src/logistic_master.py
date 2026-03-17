@@ -100,9 +100,7 @@ class LogisticRegression():
             H = self.compute_hessian(X, self.theta)
 
         
-            np.linalg.solve(H, gradient)
-
-            self.theta = self.theta - H_inv @ gradient
+            self.theta = self.theta - np.linalg.solve(H, gradient)
 
             if np.linalg.norm(gradient) < tol:
                 break
