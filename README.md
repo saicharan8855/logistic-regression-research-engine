@@ -19,6 +19,28 @@
 
 ---
 
+## Table of Contents
+
+| | Section |
+|:---:|:---|
+| 01 | [What This Actually Is](#what-this-actually-is) |
+| 02 | [Five Things This Project Proves](#five-things-this-project-proves) |
+| 03 | [Project Architecture](#project-architecture) |
+| 04 | [The Mathematical Engine](#the-mathematical-engine) |
+| 05 | [The 6 Datasets](#the-6-datasets--each-one-a-different-stress-test) |
+| 06 | [Training Pipeline](#the-full-training-pipeline) |
+| 07 | [4 Optimizers](#4-optimizers--all-from-scratch) |
+| 08 | [Regularization](#regularization--l1-l2-elastic-net) |
+| 09 | [Statistical Inference](#statistical-inference--every-coefficient-gets-a-trial) |
+| 10 | [Failure Mode Analysis](#failure-mode-analysis--the-part-most-projects-hide) |
+| 11 | [Final Results](#final-results--all-6-datasets) |
+| 12 | [Benchmark vs Sklearn](#benchmark--from-scratch-vs-sklearn) |
+| 13 | [Quick Start](#quick-start) |
+| 14 | [Project Stats](#project-stats) |
+| 15 | [Roadmap](#roadmap) |
+
+---
+
 ## What This Actually Is
 
 Most ML courses teach you to call `sklearn.linear_model.LogisticRegression()` and move on. No derivation. No diagnostics. No honesty about failure.
@@ -37,6 +59,25 @@ Every line of math — from the Bernoulli likelihood derivation to Wald z-tests 
 | **Datasets** | 6 diverse real-world datasets | 1 clean dataset |
 | **Honest Metrics** | MCC on all imbalanced data | Accuracy |
 | **Theory** | 6 LaTeX derivation notebooks | None |
+
+---
+
+## Five Things This Project Proves
+
+**1. Implementation forces understanding.**
+You cannot implement Newton's method without knowing why the Hessian must be positive semi-definite. You cannot implement L1 without understanding the proximal gradient step. `sklearn.fit()` hides all of this behind one function call.
+
+**2. Preprocessing wins models.**
+Multicollinearity removal on Breast Cancer dropped condition number from ~10³ to 23.7. 80% of Phase VIII failure modes trace back to preprocessing decisions, not model architecture.
+
+**3. Accuracy is a lie on imbalanced data.**
+Credit Fraud: 99.78% accuracy, 0.06 MCC. Stroke: 95.11% accuracy, 0.00 MCC. Always use MCC. Always plot PR curves alongside ROC.
+
+**4. Two data points can shift a decision boundary.**
+Removing indices 81 and 557 from Heart Disease (2 out of 820 samples) measurably improves MCC. High-leverage analysis belongs in every training pipeline.
+
+**5. Condition number predicts optimizer failure.**
+Adult Income's 4.14×10¹⁶ condition number explains exactly why SGD collapses there. The math predicts the empirical result before you run a single experiment.
 
 ---
 
@@ -435,25 +476,6 @@ y_pred = model.predict(X_test)   # argmax over K classes
 **Why scratch beats sklearn on Credit Fraud:** Sklearn's default L2 regularization hurts precision on extreme class imbalance. When you understand the math, you can predict this outcome before running a single experiment.
 
 **Speed gap:** Sklearn is 12×–82× faster. C++ vs Python NumPy. The point was never speed — it was understanding.
-
----
-
-## Five Things This Project Proves
-
-**1. Implementation forces understanding.**
-You cannot implement Newton's method without knowing why the Hessian must be positive semi-definite. You cannot implement L1 without understanding the proximal gradient step. `sklearn.fit()` hides all of this behind one function call.
-
-**2. Preprocessing wins models.**
-Multicollinearity removal on Breast Cancer dropped condition number from ~10³ to 23.7. 80% of Phase VIII failure modes trace back to preprocessing decisions, not model architecture.
-
-**3. Accuracy is a lie on imbalanced data.**
-Credit Fraud: 99.78% accuracy, 0.06 MCC. Stroke: 95.11% accuracy, 0.00 MCC. Always use MCC. Always plot PR curves alongside ROC.
-
-**4. Two data points can shift a decision boundary.**
-Removing indices 81 and 557 from Heart Disease (2 out of 820 samples) measurably improves MCC. High-leverage analysis belongs in every training pipeline.
-
-**5. Condition number predicts optimizer failure.**
-Adult Income's 4.14×10¹⁶ condition number explains exactly why SGD collapses there. The math predicts the empirical result before you run a single experiment.
 
 ---
 
