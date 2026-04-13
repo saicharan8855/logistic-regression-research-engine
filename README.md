@@ -12,6 +12,7 @@
 <br/>
 
 ## *Build it from scratch. Break it on purpose. Understand it completely.*
+Read on Hashnode → [https://saicharan8855.hashnode.dev/logistic-regression-is-not-a-classifier?utm_source=hashnode&utm_medium=feed]
 
 <br/>
 
